@@ -1,12 +1,15 @@
 import { escapeHtml } from "../utils"
+import { HtmlRendererOptions } from "./plain"
 
 type Lines = import("shiki").IThemedToken[][]
-type Options = import("shiki/dist/renderer").HtmlRendererOptions
 
-export function defaultShikiRenderer(lines: Lines, options: Options) {
+export function defaultShikiRenderer(lines: Lines, options: HtmlRendererOptions) {
   let html = ""
 
-  html += `<pre class="shiki">`
+  const bg = options.bg || "#fff"
+  const fg = options.fg || "black"
+
+  html += `<pre class="shiki" style="background-color: ${bg}; color: ${fg}">`
   if (options.langId) {
     html += `<div class="language-id">${options.langId}</div>`
   }
@@ -15,12 +18,13 @@ export function defaultShikiRenderer(lines: Lines, options: Options) {
 
   lines.forEach(l => {
     if (l.length === 0) {
-      html += `\n`
+      html += `<div class='line'></div>`
     } else {
+      html += `<div class='line'>`
       l.forEach(token => {
         html += `<span style="color: ${token.color}">${escapeHtml(token.content)}</span>`
       })
-      html += `\n`
+      html += `</div>`
     }
   })
 

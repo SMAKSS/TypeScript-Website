@@ -6,9 +6,12 @@ oneline: "How classes work in TypeScript"
 beta: true
 ---
 
-> [Background reading: Classes (MDN)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes)
+<blockquote class='bg-reading'>
+  <p>Background Reading:<br /><a href='https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes'>Classes (MDN)</a></p>
+</blockquote>
 
 TypeScript offers full support for the `class` keyword introduced in ES2015.
+
 As with other JavaScript language features, TypeScript adds type annotations and other syntax to allow you to express relationships between classes and other types.
 
 ## Class Members
@@ -181,7 +184,7 @@ Forgetting to call `super` is an easy mistake to make in JavaScript, but TypeScr
 
 ### Methods
 
-> > [Background Reading: Method definitions (MDN)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions)
+> [Background Reading: Method definitions (MDN)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions)
 
 A function property on a class is called a _method_.
 Methods can use all the same type annotations as functions and constructors:
@@ -334,7 +337,7 @@ c.y = 10;
 
 ### `extends` Clauses
 
-> > [Background Reading: extends keyword (MDN)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/extends)
+> [Background Reading: extends keyword (MDN)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/extends)
 
 Classes may `extend` from a base class.
 A derived class has all the properties and methods of its base class, and also define additional members.
@@ -363,7 +366,7 @@ d.woof(3);
 
 #### Overriding Methods
 
-> > [Background reading: super keyword (MDN)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/super)
+> [Background reading: super keyword (MDN)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/super)
 
 A derived class can also override a base class field or property.
 You can use the `super.` syntax to access base class methods.
@@ -490,7 +493,7 @@ Other downlevel compilers generally have the same limitation by default.
 For a subclass like the following:
 
 ```ts twoslash
-class FooError extends Error {
+class MsgError extends Error {
   constructor(m: string) {
     super(m);
   }
@@ -503,17 +506,17 @@ class FooError extends Error {
 you may find that:
 
 - methods may be `undefined` on objects returned by constructing these subclasses, so calling `sayHello` will result in an error.
-- `instanceof` will be broken between instances of the subclass and their instances, so `(new FooError()) instanceof FooError` will return `false`.
+- `instanceof` will be broken between instances of the subclass and their instances, so `(new MsgError()) instanceof MsgError` will return `false`.
 
 As a recommendation, you can manually adjust the prototype immediately after any `super(...)` calls.
 
 ```ts twoslash
-class FooError extends Error {
+class MsgError extends Error {
   constructor(m: string) {
     super(m);
 
     // Set the prototype explicitly.
-    Object.setPrototypeOf(this, FooError.prototype);
+    Object.setPrototypeOf(this, MsgError.prototype);
   }
 
   sayHello() {
@@ -522,11 +525,11 @@ class FooError extends Error {
 }
 ```
 
-However, any subclass of `FooError` will have to manually set the prototype as well.
+However, any subclass of `MsgError` will have to manually set the prototype as well.
 For runtimes that don't support [`Object.setPrototypeOf`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/setPrototypeOf), you may instead be able to use [`__proto__`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/proto).
 
 Unfortunately, [these workarounds will not work on Internet Explorer 10 and prior](<https://msdn.microsoft.com/en-us/library/s4esdbwz(v=vs.94).aspx>).
-One can manually copy methods from the prototype onto the instance itself (i.e. `FooError.prototype` onto `this`), but the prototype chain itself cannot be fixed.
+One can manually copy methods from the prototype onto the instance itself (i.e. `MsgError.prototype` onto `this`), but the prototype chain itself cannot be fixed.
 
 ## Member Visibility
 
@@ -706,7 +709,7 @@ If you need to protect values in your class from malicious actors, you should us
 
 ## Static Members
 
-> > [Background Reading: Static Members (MDN)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static)
+> [Background Reading: Static Members (MDN)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static)
 
 Classes may have `static` members.
 These members aren't associated with a particular instance of the class.
@@ -789,9 +792,9 @@ Classes, much like interfaces, can be generic.
 When a generic class is instantiated with `new`, its type parameters are inferred the same way as in a function call:
 
 ```ts twoslash
-class Box<T> {
-  contents: T;
-  constructor(value: T) {
+class Box<Type> {
+  contents: Type;
+  constructor(value: Type) {
     this.contents = value;
   }
 }
@@ -808,8 +811,8 @@ This code isn't legal, and it may not be obvious why:
 
 ```ts twoslash
 // @errors: 2302
-class Box<T> {
-  static defaultValue: T;
+class Box<Type> {
+  static defaultValue: Type;
 }
 ```
 
@@ -820,7 +823,7 @@ The `static` members of a generic class can never refer to the class's type para
 
 ## `this` at Runtime in Classes
 
-> > [Background Reading: `this` keyword (MDN)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this)
+> [Background Reading: `this` keyword (MDN)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this)
 
 It's important to remember that TypeScript doesn't change the runtime behavior of JavaScript, and that JavaScript is somewhat famous for having some peculiar runtime behaviors.
 
@@ -851,7 +854,7 @@ TypeScript provides some ways to mitigate or prevent this kind of error.
 
 ### Arrow Functions
 
-> > [Background Reading: Arrow functions (MDN)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions)
+> [Background Reading: Arrow functions (MDN)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions)
 
 If you have a function that will often be called in a way that loses its `this` context, it can make sense to use an arrow function property instead of a method definition:
 
@@ -1017,15 +1020,15 @@ console.log(a.z);
 
 ## Class Expressions
 
-> > [Background reading: Class expressions (MDN)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/class)
+> [Background reading: Class expressions (MDN)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/class)
 
 Class expressions are very similar to class declarations.
 The only real difference is that class expressions don't need a name, though we can refer to them via whatever identifier they ended up bound to:
 
 ```ts twoslash
-const someClass = class<T> {
-  content: T;
-  constructor(value: T) {
+const someClass = class<Type> {
+  content: Type;
+  constructor(value: Type) {
     this.content = value;
   }
 };

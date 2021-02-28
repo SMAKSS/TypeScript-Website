@@ -1,9 +1,9 @@
 type Lines = import("shiki").IThemedToken[][]
-type Options = import("shiki/dist/renderer").HtmlRendererOptions
 
 import type { IThemedToken } from "shiki"
 import { escapeHtml } from "../utils"
 import { tsconfig } from "../tsconfig-oneliners.generated"
+import { HtmlRendererOptions } from "./plain"
 
 /** Uses tmLanguage scopes to determine what the content of the token is */
 const tokenIsJSONKey = (token: IThemedToken) => {
@@ -23,10 +23,13 @@ const isKeyInTSConfig = (token: IThemedToken) => {
  * @param lines the result of shiki highlighting
  * @param options shiki display options
  */
-export function tsconfigJSONRenderer(lines: Lines, options: Options) {
+export function tsconfigJSONRenderer(lines: Lines, options: HtmlRendererOptions) {
   let html = ""
 
-  html += `<pre class="shiki tsconfig lsp">`
+  const bg = options.bg || "#fff"
+  const fg = options.fg || "black"
+
+  html += `<pre class="shiki tsconfig lsp" style="background-color: ${bg}; color: ${fg}">`
   if (options.langId) {
     html += `<div class="language-id">${options.langId}</div>`
   }
@@ -35,8 +38,9 @@ export function tsconfigJSONRenderer(lines: Lines, options: Options) {
 
   lines.forEach(l => {
     if (l.length === 0) {
-      html += `\n`
+      html += `<div class='line'></div>`
     } else {
+      html += `<div class='line'>`
       l.forEach(token => {
         // This means we're looking at a token which could be '"module"', '"', '"compilerOptions"' etc
         if (tokenIsJSONKey(token) && isKeyInTSConfig(token)) {
@@ -48,7 +52,7 @@ export function tsconfigJSONRenderer(lines: Lines, options: Options) {
           html += `<span style="color: ${token.color}">${escapeHtml(token.content)}</span>`
         }
       })
-      html += `\n`
+      html += `</div>`
     }
   })
 

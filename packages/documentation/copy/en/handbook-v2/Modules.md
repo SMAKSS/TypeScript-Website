@@ -132,7 +132,7 @@ Let's review each of these in more detail.
 
 ### ES6
 
-> > **Background Reading**: [import](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import) and [export](https://developer.mozilla.org/en-US/docs/web/javascript/reference/statements/export) declarations (MDN)
+> **Background Reading**: [import](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import) and [export](https://developer.mozilla.org/en-US/docs/web/javascript/reference/statements/export) declarations (MDN)
 
 TypeScript supports the full variety of `import` and `export` syntaxes.
 You can use these forms when using any module target.
@@ -265,9 +265,6 @@ define(["fs"], function (fs) {});
 
 ## Unused and Type-Only Imports
 
-TypeScript uses the same syntax for importing types and namespaces as it does for values.
-TODO finish
-
 ## Module Syntax in TypeScript
 
 TypeScript allows you to write module-based code in a syntax that can be transpiled to the module format of your choice.
@@ -316,7 +313,7 @@ Conversely, a file without any top-level import or export declarations is treate
 
 ### ES Modules
 
-> > [Background Reading: ES Modules: A cartoon deep-dive](https://hacks.mozilla.org/2018/03/es-modules-a-cartoon-deep-dive/)
+> [Background Reading: ES Modules: A cartoon deep-dive](https://hacks.mozilla.org/2018/03/es-modules-a-cartoon-deep-dive/)
 
 ## Import Forms
 

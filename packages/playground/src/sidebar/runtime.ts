@@ -81,14 +81,14 @@ function rewireLoggingToElement(
   const rawConsole = console
 
   closure.then(js => {
+    const replace = {} as any
+    bindLoggingFunc(replace, rawConsole, 'log', 'LOG', curLog)
+    bindLoggingFunc(replace, rawConsole, 'debug', 'DBG', curLog)
+    bindLoggingFunc(replace, rawConsole, 'warn', 'WRN', curLog)
+    bindLoggingFunc(replace, rawConsole, 'error', 'ERR', curLog)
+    replace['clear'] = clearLogs
+    const console = Object.assign({}, rawConsole, replace)
     try {
-      const replace = {} as any
-      bindLoggingFunc(replace, rawConsole, 'log', 'LOG', curLog)
-      bindLoggingFunc(replace, rawConsole, 'debug', 'DBG', curLog)
-      bindLoggingFunc(replace, rawConsole, 'warn', 'WRN', curLog)
-      bindLoggingFunc(replace, rawConsole, 'error', 'ERR', curLog)
-      replace['clear'] = clearLogs
-      const console = Object.assign({}, rawConsole, replace)
       eval(js)
     } catch (error) {
       console.error(i("play_run_js_fail"))
@@ -134,6 +134,8 @@ function rewireLoggingToElement(
       textRep = "<span class='literal'>null</span>"
     } else if (arg === undefined) {
       textRep = "<span class='literal'>undefined</span>"
+    } else if (typeof arg === "symbol") {
+      textRep = `<span class='literal'>${String(arg)}</span>`
     } else if (Array.isArray(arg)) {
       textRep = "[" + arg.map(objectToText).join("<span class='comma'>, </span>") + "]"
     } else if (typeof arg === "string") {
@@ -145,7 +147,7 @@ function rewireLoggingToElement(
       const prefix = nameWithoutObject ? `${nameWithoutObject}: ` : ""
       textRep = prefix + JSON.stringify(arg, null, 2)
     } else {
-      textRep = arg as any
+      textRep = String(arg)
     }
     return textRep
   }

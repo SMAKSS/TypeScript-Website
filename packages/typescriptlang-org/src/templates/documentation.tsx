@@ -47,7 +47,6 @@ const HandbookTemplate: React.FC<Props> = (props) => {
   const i = createInternational<typeof handbookCopy>(useIntl())
   const IntlLink = createIntlLink(props.pageContext.lang)
 
-
   useEffect(() => {
     overrideSubNavLinksWithSmoothScroll()
 
@@ -81,6 +80,15 @@ const HandbookTemplate: React.FC<Props> = (props) => {
       {post.frontmatter.beta && <div id="beta">Warning: This page is a work in progress</div>}
       <section id="doc-layout">
         <SidebarToggleButton />
+
+        <div className="page-popup" id="page-helpful-popup" style={{ opacity: 0 }}>
+          <p>Was this page helpful?</p>
+          <div>
+            <button className="first" id="like-button-popup"><LikeUnfilledSVG /></button>
+            <button id="dislike-button-popup"><DislikeUnfilledSVG /></button>
+          </div>
+        </div>
+
         <noscript>
           <style dangerouslySetInnerHTML={{
             __html: `
@@ -93,12 +101,11 @@ const HandbookTemplate: React.FC<Props> = (props) => {
         <Sidebar navItems={navigation} selectedID={selectedID} />
         <div id="handbook-content" role="article">
           <h2>{post.frontmatter.title}</h2>
+          {post.frontmatter.preamble && <div className="preamble" dangerouslySetInnerHTML={{ __html: post.frontmatter.preamble }} />}
           <article>
             <div className="whitespace raised">
               <div className="markdown" dangerouslySetInnerHTML={{ __html: post.html! }} />
             </div>
-
-
             {showSidebar &&
               <aside className="handbook-toc">
                 <nav>
@@ -121,6 +128,7 @@ const HandbookTemplate: React.FC<Props> = (props) => {
                       <button id="dislike-button"><DislikeUnfilledSVG /> {i("handb_dislike_desc")}</button>
                     </div>
                   </div>
+
                 </nav>
               </aside>
             }
@@ -153,6 +161,7 @@ export const pageQuery = graphql`
         handbook
         oneline
         beta
+        preamble
       }
     }
 

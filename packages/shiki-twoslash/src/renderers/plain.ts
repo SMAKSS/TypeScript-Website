@@ -1,12 +1,19 @@
 import { escapeHtml } from "../utils"
 
-type Options = import("shiki/dist/renderer").HtmlRendererOptions
+// C&P'd from shiki
+export interface HtmlRendererOptions {
+  langId?: string
+  fg?: string
+  bg?: string
+}
 
 /** You don't have a language which shiki twoslash can handle, make a DOM compatible version  */
-export function plainTextRenderer(code: string, options: Options) {
+export function plainTextRenderer(code: string, options: HtmlRendererOptions) {
   let html = ""
+  const bg = options.bg || "#fff"
+  const fg = options.fg || "black"
 
-  html += `<pre class="shiki">`
+  html += `<pre class="shiki" style="background-color: ${bg}; color: ${fg}">`
   if (options.langId) {
     html += `<div class="language-id">${options.langId}</div>`
   }

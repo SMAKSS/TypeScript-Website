@@ -59,7 +59,7 @@ It would be much better if once we performed the check, we could know the type o
 It just so happens that TypeScript has something called a _type guard_.
 A type guard is some expression that performs a runtime check that guarantees the type in some scope.
 
-#### Using type predicates
+### Using type predicates
 
 To define a type guard, we simply need to define a function whose return type is a _type predicate_:
 
@@ -114,10 +114,8 @@ const zoo: (Fish | Bird)[] = [getSmallPet(), getSmallPet(), getSmallPet()];
 const underWater1: Fish[] = zoo.filter(isFish);
 // or, equivalently
 const underWater2: Fish[] = zoo.filter<Fish>(isFish);
-const underWater3: Fish[] = zoo.filter<Fish>(pet => isFish(pet));
+const underWater3: Fish[] = zoo.filter<Fish>((pet) => isFish(pet));
 ```
-
-
 
 ### Using the `in` operator
 
@@ -218,11 +216,11 @@ let padder: Padder = getRandomPadder();
 
 if (padder instanceof SpaceRepeatingPadder) {
   padder;
-  //     ^?
+  //   ^?
 }
 if (padder instanceof StringPadder) {
   padder;
-  //     ^?
+  //   ^?
 }
 ```
 
@@ -1074,8 +1072,7 @@ type T4 = NonFunctionProperties<Part>;
 //   ^?
 ```
 
-Similar to union and intersection types, conditional types are not permitted to reference themselves recursively.
-For example the following is an error.
+Note, conditional types are not permitted to reference themselves recursively. For example the following is an error.
 
 #### Example
 

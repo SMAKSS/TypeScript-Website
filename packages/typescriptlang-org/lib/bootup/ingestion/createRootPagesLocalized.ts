@@ -25,8 +25,15 @@ export const createRootPagesLocalized = async (
 
   const langs = fs
     .readdirSync(languageRootDir)
-    .filter(f => f.endsWith(".ts") && f.length === 5)
-    .map(f => path.basename(f, ".ts"))
+    .filter(
+      f =>
+        !(
+          f.endsWith(".ts") ||
+          f.endsWith(".ts") ||
+          f.endsWith(".md") ||
+          f.startsWith(".")
+        )
+    )
 
   const files = recursiveReadDirSync(rootPagesDir)
     .filter(f => !f.startsWith(".")) // only useful files
